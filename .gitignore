@@ -1,0 +1,16 @@
+project_overview*
+
+# Build directories
+build/
+
+# Uploads directory (ignore files but keep directory)
+Uploads/*
+!Uploads/.gitkeep
+
+# IDE files
+.vscode/
+.idea/
+
+# Database files (if any end up in root)
+*.db
+*.trace.db

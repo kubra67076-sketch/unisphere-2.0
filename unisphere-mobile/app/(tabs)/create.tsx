@@ -67,10 +67,11 @@ export default function CreatePostScreen() {
 
       if (image) {
         const uri = image.uri;
-        const filename = uri.split('/').pop();
+        const filename = uri.split('/').pop() || 'upload.jpg';
         const match = /\.(\w+)$/.exec(filename);
-        const type = match ? `image/${match[1]}` : 'image/jpeg';
-        formData.append('image', { uri, name: filename, type });
+        let type = match ? `image/${match[1]}` : 'image/jpeg';
+        if (type === 'image/jpg') type = 'image/jpeg';
+        formData.append('image', { uri, name: filename, type } as any);
       }
 
       const response = await axios.post(`${BASE_URL}/api/posts`, formData, {

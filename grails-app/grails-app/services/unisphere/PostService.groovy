@@ -78,7 +78,6 @@ class PostService {
         }
 
         Post post = new Post(
-            id: postId,
             postType: postType,
             title: title ?: 'No Title',
             description: description ?: '',
@@ -88,7 +87,9 @@ class PostService {
             likes: 0
         )
 
-        if (post.save(flush: true)) {
+        post.id = postId
+
+        if (post.save(insert: true, flush: true)) {
             return [success: true, message: 'Post created successfully.']
         } else {
             return [success: false, message: "Error: ${post.errors.allErrors.collect { it.defaultMessage }.join(', ')}"]

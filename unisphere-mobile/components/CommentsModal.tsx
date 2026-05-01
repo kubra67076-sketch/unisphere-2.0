@@ -6,7 +6,20 @@ import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import { BASE_URL } from '../constants/Config';
 
-
+function timeAgo(dateStr: string | null): string {
+  if (!dateStr) return 'Just now';
+  const date = new Date(dateStr);
+  const now = new Date();
+  const seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+  if (seconds < 60) return 'Just now';
+  const minutes = Math.floor(seconds / 60);
+  if (minutes < 60) return `${minutes}m ago`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours}h ago`;
+  const days = Math.floor(hours / 24);
+  if (days < 7) return `${days}d ago`;
+  return date.toLocaleDateString();
+}
 
 export default function CommentsModal({ postId, visible, onClose }) {
   const { userToken, userInfo } = useAuth();
@@ -82,13 +95,13 @@ export default function CommentsModal({ postId, visible, onClose }) {
             renderItem={({ item }) => (
               <View style={styles.commentItem}>
                 <Image
-                  source={{ uri: `https://api.dicebear.com/9.x/micah/png?seed=${item.author || 'user'}&backgroundColor=transparent&size=60` }}
+                  source={{ uri: `https://api.dicebear.com/9.x/micah/png?seed=${item.author_email || 'user'}&backgroundColor=transparent&size=60` }}
                   style={styles.commentAvatar}
                 />
                 <View style={styles.commentBubble}>
-                  <Text style={styles.commentAuthor}>{item.author || 'Anonymous'}</Text>
+                  <Text style={styles.commentAuthor}>{item.username || 'Anonymous'}</Text>
                   <Text style={styles.commentText}>{item.content}</Text>
-                  <Text style={styles.commentTime}>{item.timeAgo || 'Just now'}</Text>
+                  <Text style={styles.commentTime}>{timeAgo(item.created_at)}</Text>
                 </View>
               </View>
             )}

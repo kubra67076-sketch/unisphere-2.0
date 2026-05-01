@@ -8,7 +8,20 @@ import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
 import { BASE_URL } from '../../constants/Config';
 
-
+function timeAgo(dateStr: string | null): string {
+  if (!dateStr) return 'Just now';
+  const date = new Date(dateStr);
+  const now = new Date();
+  const seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+  if (seconds < 60) return 'Just now';
+  const minutes = Math.floor(seconds / 60);
+  if (minutes < 60) return `${minutes}m ago`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours}h ago`;
+  const days = Math.floor(hours / 24);
+  if (days < 7) return `${days}d ago`;
+  return date.toLocaleDateString();
+}
 
 export default function NotificationsScreen() {
   const { userToken } = useAuth();
@@ -40,7 +53,7 @@ export default function NotificationsScreen() {
         params: { id },
         headers: { 'Authorization': `Bearer ${userToken}` },
       });
-      setNotifications(prev => prev.map(n => n.id === id ? { ...n, isRead: true } : n));
+      setNotifications(prev => prev.map(n => n.id === id ? { ...n, is_read: true } : n));
     } catch (e) {
       console.log('Error marking notification as read', e);
     }
@@ -66,7 +79,7 @@ export default function NotificationsScreen() {
 
   const renderNotification = ({ item }) => (
     <TouchableOpacity
-      style={[styles.notifCard, !item.isRead && styles.notifUnread]}
+      style={[styles.notifCard, !item.is_read && styles.notifUnread]}
       onPress={() => markAsRead(item.id)}
       activeOpacity={0.7}
     >
@@ -75,9 +88,9 @@ export default function NotificationsScreen() {
       </View>
       <View style={styles.notifContent}>
         <Text style={styles.notifMessage}>{item.message}</Text>
-        <Text style={styles.notifTime}>{item.timeAgo || 'Just now'}</Text>
+        <Text style={styles.notifTime}>{timeAgo(item.created_at)}</Text>
       </View>
-      {!item.isRead && <View style={styles.unreadDot} />}
+      {!item.is_read && <View style={styles.unreadDot} />}
     </TouchableOpacity>
   );
 
@@ -91,7 +104,7 @@ export default function NotificationsScreen() {
           <Text style={styles.headerTitle}>Notifications</Text>
         </View>
         <Text style={styles.headerCount}>
-          {notifications.filter(n => !n.isRead).length} unread
+          {notifications.filter(n => !n.is_read).length} unread
         </Text>
       </View>
 
