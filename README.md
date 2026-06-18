@@ -155,7 +155,7 @@ Scan the QR code with Expo Go (Android) or Camera (iOS).
 
 ## 👤 Author
 
-Developed by **Mihir Misran** as a capstone project.
+Developed by **Khatijatul Kubra** as a capstone project.
 
 ---
 
@@ -163,6 +163,6 @@ Developed by **Mihir Misran** as a capstone project.
 
 **All Rights Reserved.**
 
-Copyright © 2026 Mihir Misran. This software and its source code are proprietary and confidential. Unauthorized copying, modification, distribution, or use of this software, in whole or in part, via any medium, is strictly prohibited without explicit written permission from the author.
+Copyright © 2026 Khatijatul Kubra. This software and its source code are proprietary and confidential. Unauthorized copying, modification, distribution, or use of this software, in whole or in part, via any medium, is strictly prohibited without explicit written permission from the author.
 
 This project is **not open source**. No license is granted to any party to use, modify, or redistribute this code.
